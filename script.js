@@ -2,20 +2,24 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebas
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-
-// --- ⚡ HIDE LOADING SCREEN AFTER 2 SECONDS ---
-window.addEventListener("load", () => {
+// --- ⚡ ROBUST MOBILE LOADER FIX ---
+function hideLoader() {
     const loader = document.getElementById("loader");
-    setTimeout(() => {
-        if (loader) {
-            loader.style.opacity = "0";
-            setTimeout(() => {
-                loader.style.display = "none";
-            }, 500); // Wait for fade out to finish
-        }
-    }, 2000); // 2000ms = 2 Seconds
-});
-// Your exact config
+    if (loader) {
+        loader.style.opacity = "0";
+        setTimeout(() => {
+            loader.style.display = "none";
+        }, 500);
+    }
+}
+
+// 1. Hide when the page finishes loading
+window.addEventListener("load", hideLoader);
+
+// 2. FAIL-SAFE: If the page takes > 3 seconds, hide it anyway (Fixes freezing)
+setTimeout(hideLoader, 3000); 
+
+// --- FIREBASE CONFIGURATION ---
 const firebaseConfig = {
     apiKey: "AIzaSyDTcQiJ1fbg9VUhT_cWLELE7yKbiZYkBe4",
     authDomain: "ff-arena-fc8c6.firebaseapp.com",
