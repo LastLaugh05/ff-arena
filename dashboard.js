@@ -1,3 +1,16 @@
+// --- ⚡ ROBUST MOBILE LOADER FIX ---
+function hideLoader() {
+    const loader = document.getElementById("loader");
+    if (loader) {
+        loader.style.opacity = "0";
+        setTimeout(() => {
+            loader.style.display = "none";
+        }, 500);
+    }
+}
+window.addEventListener("load", hideLoader);
+setTimeout(hideLoader, 3000); // Fail-safe: Force hide after 3 seconds
+
 import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 import { getFirestore, doc, getDoc, collection, getDocs, query, orderBy, updateDoc, increment, arrayUnion } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
@@ -22,7 +35,6 @@ const db = getFirestore(app);
 
 // --- SETTINGS & VARIABLES ---
 const ADMIN_EMAILS = ["utsharudra@gmail.com", "dibyendunath84@gmail.com"]; 
- 
 const ADMIN_UPI_ID = "9832972438@ibl"; 
 const ADMIN_WHATSAPP_NUMBER = "919832972438"; 
 
@@ -36,7 +48,8 @@ let globalWhatsappDetails = "";
 // =====================================
 onAuthStateChanged(auth, async (user) => {
     if (user) {
-        if (user.email === ADMIN_EMAIL) {
+        // 🔥 FIXED: Check against the ADMIN_EMAILS array
+        if (ADMIN_EMAILS.includes(user.email)) {
             document.getElementById('go-to-admin-btn').classList.remove('hidden');
         }
         try {
