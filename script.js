@@ -83,3 +83,14 @@ document.getElementById('username-form').addEventListener('submit', async (e) =>
         }
     }
 });
+
+// ==========================================
+// --- 📱 PWA APP REGISTRATION (NEW!) ---
+// ==========================================
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+            .then(reg => console.log('App Engine Started Successfully!', reg))
+            .catch(err => console.error('App Engine Failed...', err));
+    });
+}
