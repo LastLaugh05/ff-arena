@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FF Arena - Admin Panel</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="dashboard-body">
+
+    <div class="circle" style="background: #ff5e00;"></div>
+    <div class="circle" style="background: #ff0040;"></div>
+
+    <div class="dashboard-wrapper admin-wrapper">
+        
+        <nav class="top-nav" style="border-bottom-color: rgba(255, 94, 0, 0.3);">
+            <div class="logo">
+                <h2 class="glow-title" style="margin: 0; font-size: 1.5em; text-shadow: 0 0 10px #ff5e00; color: #ff5e00;">
+                    FF ARENA <span style="font-size: 0.5em; color: #fff;">[ADMIN]</span>
+                </h2>
+            </div>
+            <div class="nav-right">
+                <div class="user-profile">
+                    <span id="admin-name" style="color: #ff5e00;">Admin User</span>
+                    <button id="logout-btn" class="logout-icon">🚪</button>
+                </div>
+            </div>
+        </nav>
+
+        <div class="tabs">
+            <button class="tab-btn admin-tab active" data-target="create-match">➕ Create Match</button>
+            <button class="tab-btn admin-tab" data-target="manage-matches">⚙️ Manage Matches</button>
+        </div>
+
+        <div id="create-match" class="admin-content-section">
+            <h3 style="color: #fff; margin-bottom: 20px;">Create New Tournament</h3>
+            <form id="create-match-form" class="admin-form">
+                
+                <div class="form-row">
+                    <div class="input-group">
+                        <label>Tournament Title</label>
+                        <input type="text" id="match-title" required placeholder="e.g. Sunday Mega Showdown" style="border-color: #ff5e00;">
+                    </div>
+                    <div class="input-group">
+                        <label>Select Mode (Auto-sets limits)</label>
+                        <select id="match-mode" required class="admin-select">
+                            <option value="solo">SOLO (48 Slots)</option>
+                            <option value="duo">DUO (24 Slots)</option>
+                            <option value="squad">SQUAD (12 Slots)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="input-group">
+                        <label>Map</label>
+                        <select id="match-map" required class="admin-select">
+                            <option value="Bermuda">Bermuda</option>
+                            <option value="Purgatory">Purgatory</option>
+                            <option value="Kalahari">Kalahari</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>Schedule Time</label>
+                        <input type="datetime-local" id="match-time" required style="border-color: #ff5e00; cursor: pointer;" onkeydown="return false;" onclick="this.showPicker();">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="input-group">
+                        <label>Prize Pool (₹)</label>
+                        <input type="number" id="prize-pool" required style="border-color: #ff5e00;">
+                    </div>
+                    <div class="input-group">
+                        <label>Entry Fee (₹)</label>
+                        <input type="number" id="entry-fee" required style="border-color: #ff5e00;">
+                    </div>
+                </div>
+
+                <button type="submit" class="orange-glow-btn">PUBLISH TOURNAMENT</button>
+            </form>
+        </div>
+
+        <div id="manage-matches" class="admin-content-section hidden">
+            <h3 style="color: #fff; margin-bottom: 20px;">Live & Upcoming Matches</h3>
+            
+            <div class="matches-grid" id="admin-matches-grid">
+                <p style="color: rgba(255,255,255,0.5); text-align: center; width: 100%;">⏳ Loading matches...</p>
+            </div>
+        </div>
+
+        <div id="players-modal" class="modal hidden">
+            <div class="modal-content" style="max-width: 600px; border-color: #ff5e00;">
+                <span id="close-players-modal" class="close-modal">&times;</span>
+                <h2 style="color: #ff5e00; margin-bottom: 20px;">Registered Teams & Slots</h2>
+                
+                <div id="players-list-container">
+                    <p style="color: #fff; text-align: center;">⏳ Loading players...</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="scores-modal" class="modal hidden">
+            <div class="modal-content" style="max-width: 600px; border-color: #ffd700;">
+                <span id="close-scores-modal" class="close-modal">&times;</span>
+                <h2 style="color: #ffd700; margin-bottom: 20px; text-shadow: 0 0 10px #ffd700;">🏆 Update Match Scores</h2>
+                
+                <div style="background: rgba(255,215,0,0.1); border: 1px solid #ffd700; color: #ffd700; padding: 10px; border-radius: 8px; font-size: 0.85em; margin-bottom: 20px;">
+                    <strong>Scoring Rule:</strong> 1st(12), 2nd(10), 3rd(8), 4th(6), 5th(5), 6th(3), 7th(2), 8th(1). +1 pt per Kill.
+                </div>
+
+                <div id="scores-list-container">
+                    <p style="color: #fff; text-align: center;">⏳ Loading verified players...</p>
+                </div>
+
+                <button id="save-all-scores-btn" class="orange-glow-btn" style="margin-top: 20px; border-color: #ffd700; color: #ffd700; box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);">
+                    💾 SAVE ALL SCORES
+                </button>
+            </div>
+        </div>
+
+    </div> 
+    
+    <script type="module" src="admin.js"></script>
+</body>
+</html>
