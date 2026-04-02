@@ -9,7 +9,7 @@ setTimeout(hideLoader, 3000);
 // ─── Firebase ─────────────────────────────────────────────────────────────────
 import { initializeApp, getApps, getApp }                   from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
 import { getAuth, onAuthStateChanged, signOut }             from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
-import { getFirestore, doc, getDoc, collection, getDocs,
+import { getFirestore, doc, getDoc, collection, getDocs, onSnapshot,
          query, orderBy, updateDoc, increment, arrayUnion } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 import { loadLeaderboard }                                  from './leaderboard.js';
 
@@ -54,7 +54,7 @@ onAuthStateChanged(auth, async (user) => {
     }
   } catch (e) { console.error(e); }
 
-  await loadTournaments();
+  loadTournaments();
 });
 
 // ─── Build Input Fields per Mode ─────────────────────────────────────────────
@@ -175,50 +175,55 @@ function buildCard(match, matchId, userReg) {
   </div>`;
 }
 
-// ─── Load Tournaments ─────────────────────────────────────────────────────────
-async function loadTournaments() {
+// ─── Load Tournaments (NOW REAL-TIME) ─────────────────────────────────────────
+function loadTournaments() {
   const grid   = document.getElementById('matches-grid');
   const myGrid = document.getElementById('my-matches-grid');
 
   try {
-    const q    = query(collection(db, "tournaments"), orderBy("createdAt", "desc"));
-    const snap = await getDocs(q);
-
-    if (snap.empty) {
-      grid.innerHTML   = emptyMsg("No upcoming tournaments right now. Check back soon!");
-      myGrid.innerHTML = emptyMsg("You haven't joined any tournaments yet.");
-      return;
-    }
-
-    let upcomingHTML = '';
-    let myHTML       = '';
-    let upcomingCnt  = 0;
-    let myCnt        = 0;
-
-    snap.forEach(docSnap => {
-      const match   = docSnap.data();
-      const matchId = docSnap.id;
-
-      // Skip completed matches from player view
-      if (match.status === "completed") return;
-
-      const userReg  = (match.registeredPlayers || []).find(p => p.userId === currentUserId) || null;
-      const cardHTML = buildCard(match, matchId, userReg);
-
-      if (userReg) {
-        myHTML += cardHTML;
-        myCnt++;
-      } else {
-        upcomingHTML += cardHTML;
-        upcomingCnt++;
+    const q = query(collection(db, "tournaments"), orderBy("createdAt", "desc"));
+    
+    // onSnapshot replaces getDocs for real-time instant updates!
+    onSnapshot(q, (snap) => {
+      if (snap.empty) {
+        grid.innerHTML   = emptyMsg("No upcoming tournaments right now. Check back soon!");
+        myGrid.innerHTML = emptyMsg("You haven't joined any tournaments yet.");
+        return;
       }
+
+      let upcomingHTML = '';
+      let myHTML       = '';
+      let upcomingCnt  = 0;
+      let myCnt        = 0;
+
+      snap.forEach(docSnap => {
+        const match   = docSnap.data();
+        const matchId = docSnap.id;
+
+        // Skip completed matches from player view
+        if (match.status === "completed") return;
+
+        const userReg  = (match.registeredPlayers || []).find(p => p.userId === currentUserId) || null;
+        const cardHTML = buildCard(match, matchId, userReg);
+
+        if (userReg) {
+          myHTML += cardHTML;
+          myCnt++;
+        } else {
+          upcomingHTML += cardHTML;
+          upcomingCnt++;
+        }
+      });
+
+      grid.innerHTML   = upcomingCnt  ? upcomingHTML  : emptyMsg("All matches joined! Check your 'My Matches' tab.");
+      myGrid.innerHTML = myCnt ? myHTML : emptyMsg("You haven't joined any tournaments yet!", true);
+
+      attachJoinListeners();
+      attachRoomListeners();
+    }, (error) => {
+      console.error("Real-time listening error:", error);
+      grid.innerHTML = '<p style="color:var(--red);text-align:center;grid-column:1/-1;">Failed to load. Check your internet connection.</p>';
     });
-
-    grid.innerHTML   = upcomingCnt  ? upcomingHTML  : emptyMsg("All matches joined! Check your 'My Matches' tab.");
-    myGrid.innerHTML = myCnt ? myHTML : emptyMsg("You haven't joined any tournaments yet!", true);
-
-    attachJoinListeners();
-    attachRoomListeners();
 
   } catch (err) {
     console.error(err);
@@ -329,8 +334,10 @@ document.getElementById('whatsapp-btn').addEventListener('click', () => {
   const link = `https://wa.me/${ADMIN_WA_NUM}?text=${encodeURIComponent(msg)}`;
   window.open(link, '_blank', 'noopener');
   joinModal.classList.add('hidden');
-  // Reload after a short delay to show updated status
-  setTimeout(() => window.location.reload(), 1200);
+  
+  // NOTE: I kept the setTimeout for your WhatsApp button so the window closes smoothly, 
+  // but the page will no longer need this refresh to show the updated slot!
+  setTimeout(() => joinModal.classList.add('hidden'), 500); 
 });
 
 // ─── Room Modal ───────────────────────────────────────────────────────────────
@@ -364,3 +371,21 @@ document.getElementById('logout-btn').addEventListener('click', () =>
 
 document.getElementById('go-to-admin-btn').addEventListener('click', () =>
   window.location.href = "admin.html");
+
+// ─── Manual Refresh Button ────────────────────────────────────────────────────
+const refreshBtn = document.getElementById('manual-refresh-btn');
+if (refreshBtn) {
+  refreshBtn.addEventListener('click', () => {
+    // 1. Show the cool loading screen again
+    const loader = document.getElementById('loader');
+    if (loader) {
+      loader.style.display = 'flex';
+      loader.style.opacity = '1';
+    }
+    
+    // 2. Reload the app safely after a tiny delay
+    setTimeout(() => {
+      window.location.reload();
+    }, 400); 
+  });
+}
