@@ -1,128 +1,134 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FF Arena - Dashboard</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>FF Arena — Dashboard</title>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#090a0f">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body class="dashboard-body">
 
-    <div class="circle"></div>
-    <div class="circle"></div>
+  <div class="circle"></div>
+  <div class="circle"></div>
 
-    <div class="dashboard-wrapper">
-        
-        <nav class="top-nav">
-            <div class="logo">
-                <h2 class="glow-title" style="margin: 0; font-size: 1.5em;">FF ARENA</h2>
-            </div>
-            <div class="nav-right">
-                <div class="user-profile">
-                    <span id="player-name">Loading...</span>
-                    
-                    <button id="go-to-admin-btn" class="orange-glow-btn small-btn hidden" style="padding: 8px 15px; margin: 0; margin-right: 10px;">⚙️ ADMIN</button>
-                    
-                    <button id="logout-btn" class="logout-icon">🚪</button>
-                </div>
-            </div>
-        </nav>
+  <div class="dashboard-wrapper">
 
-        <div class="tabs">
-            <button class="tab-btn active" data-target="section-upcoming">Upcoming Matches</button>
-            <button class="tab-btn" data-target="section-my-matches">My Matches</button>
-            <button class="tab-btn" data-target="section-leaderboard">Leaderboard</button>
+    <!-- NAV -->
+    <nav class="top-nav">
+      <div class="logo">
+        <h2 class="glow-title">FF ARENA</h2>
+      </div>
+      <div class="nav-right">
+        <div class="user-profile">
+          <span id="player-name">...</span>
+          <button id="go-to-admin-btn" class="orange-glow-btn small-btn hidden">⚙ ADMIN</button>
+          <button id="logout-btn" class="logout-icon" title="Logout">🚪</button>
         </div>
+      </div>
+    </nav>
 
-        <div id="section-upcoming" class="dashboard-section">
-            <div class="matches-grid" id="matches-grid">
-                <p style="color: #fff; text-align: center; width: 100%; font-weight: 600; padding-top: 50px;">
-                    ⏳ Loading Tournaments from Server...
-                </p>
-            </div>
-        </div>
-
-        <div id="section-my-matches" class="dashboard-section hidden">
-            <div class="matches-grid" id="my-matches-grid">
-                <p style="color: rgba(255,255,255,0.5); text-align: center; width: 100%; padding-top: 50px;">
-                    ⏳ Loading your registered matches...
-                </p>
-            </div>
-        </div>
-
-        <div id="section-leaderboard" class="dashboard-section hidden">
-            <div style="text-align: center; padding: 60px 20px; background: rgba(0,0,0,0.3); border-radius: 20px; border: 1px solid rgba(255, 215, 0, 0.2); margin: 30px; box-shadow: 0 0 30px rgba(255,215,0,0.05);">
-                <div style="font-size: 4em; margin-bottom: 15px;">🏆</div>
-                <h2 style="color: #ffd700; margin-bottom: 10px; text-shadow: 0 0 15px rgba(255,215,0,0.4);">GLOBAL LEADERBOARD</h2>
-                <p style="color: rgba(255,255,255,0.6); max-width: 500px; margin: 0 auto; line-height: 1.6;">
-                    The Esports Scoring System (Position Points + Kill Points) is being integrated. Rankings will appear here once the Admin starts updating match results!
-                </p>
-            </div>
-        </div>
-
-        <div id="join-modal" class="modal hidden">
-            <div class="modal-content">
-                <span id="close-modal" class="close-modal">&times;</span>
-                <h2 id="modal-match-title" style="color: #fff; margin-bottom: 20px;">Join Match</h2>
-
-                <div id="step-1-details">
-                    <p class="sub-text">Enter game details to register.</p>
-                    <form id="join-details-form" autocomplete="off">
-                        
-                        <div id="dynamic-fields">
-                        </div>
-
-                        <button type="submit" class="cyan-glow-btn" style="margin-top: 15px;">PROCEED TO PAYMENT</button>
-                    </form>
-                </div>
-
-                <div id="step-2-payment" class="hidden text-center">
-                    <h3 style="color: #00f0ff;">Entry Fee: <span id="modal-fee-display">₹0</span></h3>
-                    <p class="sub-text">Scan & Pay via PhonePe, GPay, or Paytm</p>
-
-                    <div class="qr-box">
-                        <img id="upi-qr-img" src="" alt="UPI QR Code" class="qr-img">
-                    </div>
-                    <p style="color: #fff; font-weight: bold; margin: 10px 0; letter-spacing: 1px;">UPI: <span id="admin-upi-text">your.upi@bank</span></p>
-
-                    <div class="warning-box">
-                        ⚠️ <strong>IMPORTANT:</strong> Take a screenshot of your successful payment before leaving this app!
-                    </div>
-
-                    <button id="whatsapp-btn" class="whatsapp-btn">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WA" width="22">
-                        SEND SCREENSHOT ON WHATSAPP
-                    </button>
-                </div>
-
-            </div>
-        </div>
-        
-        <div id="verified-slot-modal" class="modal hidden">
-            <div class="modal-overlay"></div>
-            <div class="modal-content" style="text-align: center; padding: 40px 30px;">
-                <span class="close-modal" id="close-verified-modal">&times;</span>
-                <h2 style="font-size: 1.8em; margin-bottom: 5px; color: #00f0ff; text-shadow: 0 0 10px rgba(0,240,255,0.5);">MATCH VERIFIED!</h2>
-                <div style="font-size: 3em; margin-bottom: 20px;">✅</div>
-                
-                <div style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 15px; margin-bottom: 25px;">
-                    <div style="margin-bottom: 15px; border-bottom: 1px solid rgba(0,240,255,0.2); padding-bottom: 10px;">
-                        <span style="color: rgba(255,255,255,0.5); display: block; font-size: 0.8em; font-weight: 600; margin-bottom: 5px;">🎮 ROOM ID</span>
-                        <span id="player-room-id" style="color: #fff; font-size: 1.5em; font-weight: 800; letter-spacing: 2px;">loading...</span>
-                    </div>
-                    <div>
-                        <span style="color: rgba(255,255,255,0.5); display: block; font-size: 0.8em; font-weight: 600; margin-bottom: 5px;">🔐 PASSWORD</span>
-                        <span id="player-room-password" style="color: #ffd700; font-size: 1.5em; font-weight: 800; letter-spacing: 2px;">loading...</span>
-                    </div>
-                </div>
-                
-                <p style="color: rgba(255,255,255,0.6); font-weight: 600; margin-bottom: 20px; font-size: 0.9em;">GOOD LUCK, GAMER!</p>
-                <button class="cyan-glow-btn" id="verified-match-great-btn">GREAT!</button>
-            </div>
-        </div>
-
+    <!-- TABS -->
+    <div class="tabs">
+      <button class="tab-btn active" data-target="section-upcoming">🎮 Upcoming</button>
+      <button class="tab-btn" data-target="section-my-matches">📋 My Matches</button>
+      <button class="tab-btn" data-target="section-leaderboard">📊 Results</button>
     </div>
 
-    <script type="module" src="dashboard.js"></script>
+    <!-- SECTION: UPCOMING -->
+    <div id="section-upcoming" class="dashboard-section">
+      <div class="matches-grid" id="matches-grid">
+        <p style="color:var(--muted);text-align:center;grid-column:1/-1;padding:60px 20px;">
+          ⏳ Loading tournaments…
+        </p>
+      </div>
+    </div>
+
+    <!-- SECTION: MY MATCHES -->
+    <div id="section-my-matches" class="dashboard-section hidden">
+      <div class="matches-grid" id="my-matches-grid">
+        <p style="color:var(--muted);text-align:center;grid-column:1/-1;padding:60px 20px;">
+          ⏳ Loading your matches…
+        </p>
+      </div>
+    </div>
+
+    <!-- SECTION: RESULTS / LEADERBOARD -->
+    <div id="section-leaderboard" class="dashboard-section hidden">
+      <!-- Filled by leaderboard.js -->
+    </div>
+
+  </div><!-- /dashboard-wrapper -->
+
+
+  <!-- JOIN MODAL -->
+  <div id="join-modal" class="modal hidden">
+    <div class="modal-content">
+      <button id="close-modal" class="close-modal">&times;</button>
+      <h2 id="modal-match-title" style="font-size:1.2em;margin-bottom:16px;">Join Match</h2>
+
+      <!-- STEP 1: Details -->
+      <div id="step-1-details">
+        <p class="sub-text" style="text-align:left;">Fill in your game details below.</p>
+        <form id="join-details-form" autocomplete="off">
+          <div id="dynamic-fields"></div>
+          <button type="submit" class="cyan-glow-btn" style="margin-top:8px;">
+            PROCEED TO PAYMENT →
+          </button>
+        </form>
+      </div>
+
+      <!-- STEP 2: Payment -->
+      <div id="step-2-payment" class="hidden text-center">
+        <p style="color:var(--cyan);font-size:1.1em;font-weight:700;margin-bottom:4px;">
+          Entry Fee: <span id="modal-fee-display">₹0</span>
+        </p>
+        <p class="sub-text">Scan & pay via PhonePe / GPay / Paytm</p>
+        <div class="qr-box">
+          <img id="upi-qr-img" src="" alt="UPI QR Code" class="qr-img">
+        </div>
+        <p class="upi-text">UPI ID: <span id="admin-upi-text"></span></p>
+        <div class="warning-box">
+          ⚠️ <strong>IMPORTANT:</strong> Screenshot your payment before leaving this screen!
+        </div>
+        <button id="whatsapp-btn" class="whatsapp-btn">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WA" width="22">
+          SEND SCREENSHOT ON WHATSAPP
+        </button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ROOM DETAILS MODAL -->
+  <div id="verified-slot-modal" class="modal hidden">
+    <div class="modal-content text-center">
+      <button class="close-modal" id="close-verified-modal">&times;</button>
+      <div style="font-size:2.6em;margin-bottom:8px;">✅</div>
+      <h2 style="color:var(--cyan);font-size:1.3em;margin-bottom:18px;">MATCH CONFIRMED!</h2>
+
+      <div class="room-reveal-block">
+        <div class="room-reveal-row">
+          <span class="room-reveal-label">🎮 Room ID</span>
+          <span id="player-room-id" class="room-reveal-value">—</span>
+        </div>
+        <div class="room-reveal-row">
+          <span class="room-reveal-label">🔐 Password</span>
+          <span id="player-room-password" class="room-reveal-value gold">—</span>
+        </div>
+      </div>
+
+      <p style="color:var(--muted);font-size:0.82em;margin-bottom:18px;">
+        ⚠️ Play ONLY on your assigned slot. Wrong slot = Disqualification!
+      </p>
+      <button class="cyan-glow-btn" id="verified-match-great-btn">GOT IT — GOOD LUCK! 🔥</button>
+    </div>
+  </div>
+
+  <script type="module" src="dashboard.js"></script>
 </body>
 </html>
