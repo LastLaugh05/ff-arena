@@ -1,58 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <title>FF ARENA - Esports Tournaments</title>
-    <meta name="description" content="Join daily Free Fire tournaments and win prizes!">
-    
-<link rel="icon" type="image/png" href="favicon.png">
-<link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#0f1014">
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="FF ARENA India">
-    <meta property="og:description" content="Join daily Free Fire tournaments and win prizes!">
-    <meta property="og:image" content="https://your-netlify-link.netlify.app/preview.jpg">
-
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>FF Arena — Esports Tournaments</title>
+  <meta name="description" content="Join daily Free Fire paid tournaments and win real cash prizes!">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="apple-touch-icon" href="favicon.png">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#090a0f">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="FF Arena">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="FF Arena — Free Fire Tournaments">
+  <meta property="og:description" content="Join daily Free Fire paid tournaments and win real cash!">
+  <meta property="og:image" content="preview.jpg">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <div id="loader">
-        <div class="loader-content">
-            <h1 class="loader-logo">FF ARENA</h1>
-            <div class="loader-bar"></div>
-        </div>
+  <!-- SPLASH LOADER -->
+  <div id="loader">
+    <div class="loader-logo">FF ARENA</div>
+    <div class="loader-tagline">Tournament Platform</div>
+    <div class="loader-bar-wrap"><div class="loader-bar"></div></div>
+  </div>
+
+  <!-- BACKGROUND ORBS -->
+  <div class="circle"></div>
+  <div class="circle"></div>
+
+  <!-- MAIN CARD -->
+  <div class="wrapper single-panel" id="main-wrapper">
+
+    <!-- LOGIN SCREEN -->
+    <div class="form-box" id="login-box">
+      <h2>FF ARENA</h2>
+      <p class="brand-tagline">Tournament Platform · Est. 2024</p>
+      <button id="google-login-btn" class="google-btn">
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/google/google-original.svg" alt="Google">
+        Continue with Google
+      </button>
+      <p class="sub-text" style="margin-top:12px;margin-bottom:0;font-size:0.75em;">
+        By continuing you agree to our terms of service
+      </p>
     </div>
 
-    <div class="circle"></div>
-    <div class="circle"></div>
-
-    <div class="wrapper single-panel" id="main-wrapper">
-        
-        <div class="form-box" id="login-box">
-            <h2>FF ARENA</h2>
-            <button id="google-login-btn" class="google-btn">
-                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/google/google-original.svg" alt="G">
-                CONTINUE WITH GOOGLE
-            </button>
+    <!-- USERNAME SETUP -->
+    <div class="form-box hidden" id="username-box">
+      <h2>Almost Done!</h2>
+      <p class="sub-text">Pick a unique username for FF Arena.<br>This is how other players will see you.</p>
+      <form id="username-form" autocomplete="off">
+        <div class="input-group">
+          <label>Your Arena Username</label>
+          <input type="text" id="app-username" required autocomplete="off"
+            placeholder="e.g. GhostKiller_FF" maxlength="20"
+            pattern="[a-zA-Z0-9_]+" title="Letters, numbers, and underscores only">
         </div>
-
-        <div class="form-box hidden" id="username-box">
-            <h2>Almost Done!</h2>
-            <p class="sub-text">Choose a unique app username for FF Arena.</p>
-            <form id="username-form" autocomplete="off">
-                <div class="input-group">
-                    <label>App Username</label>
-                    <input type="text" id="app-username" required autocomplete="off">
-                </div>
-                <button type="submit" class="cyan-glow-btn">ENTER ARENA</button>
-            </form>
-        </div>
-
+        <button type="submit" class="cyan-glow-btn" id="username-btn">ENTER ARENA</button>
+      </form>
     </div>
 
-    <script type="module" src="script.js"></script>
+  </div><!-- /wrapper -->
+
+  <script type="module" src="script.js"></script>
 </body>
 </html>
